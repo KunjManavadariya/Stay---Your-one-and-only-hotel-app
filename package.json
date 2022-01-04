@@ -1,0 +1,38 @@
+{
+  "name": "stay-app",
+  "version": "1.0.0",
+  "description": "This is a hotel view-review app where a lot of real-life functionalities have been implemented to add or review a hotel or to view some hotels' reviews.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KunjManavadariya/Stay---Your-one-and-only-hotel-app.git"
+  },
+  "keywords": [
+    "Stay",
+    "Hotel",
+    "finder",
+    "Review",
+    "CRUD",
+    "Javascript",
+    "Express",
+    "Mongo",
+    "Mongoose",
+    "HTML5",
+    "CSS3"
+  ],
+  "author": "Kunj Manavadariya",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KunjManavadariya/Stay---Your-one-and-only-hotel-app/issues"
+  },
+  "homepage": "https://github.com/KunjManavadariya/Stay---Your-one-and-only-hotel-app#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^6.1.4"
+  }
+}
