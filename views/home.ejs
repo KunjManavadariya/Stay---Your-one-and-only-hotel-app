@@ -9,11 +9,16 @@
 </head>
 
 <body>
-    <h1>All Campgrounds</h1>
+    <h1>All Hotels</h1>
+    <a href="/hotels/new">Add a hotel</a>
     <ul>
-        for(let hotel of hotels){
-        <li></li>
-        }
+        <%for(let hotel of hotels){%>
+            <li>
+                <a href="/hotels/<%=hotel._id%>">
+                    <%=hotel.name%>
+                </a>
+            </li>
+            <%}%>
     </ul>
 
 </body>
