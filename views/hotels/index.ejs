@@ -1,0 +1,28 @@
+<%layout('layouts/boilerplate.ejs')%>
+
+    <h1>All Hotels</h1>
+
+    <% for (let hotel of hotels){%>
+        <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <img class="img-fluid mh-100" alt="" src="<%=hotel.images[0].url%>">
+                </div>
+                <div class="col-md-8">
+
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= hotel.name %>
+                        </h5>
+                        <p class="card-text">
+                            <%= hotel.description %>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted"><%= hotel.location%></small>
+                        </p>
+                        <a class="btn btn-primary" href="/hotels/<%=hotel._id%>">View <%=hotel.name%></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% }%>

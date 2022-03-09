@@ -1,18 +1,61 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
-const Hotel = require('./models/hotel');
+const appError = require('./utils/errorClass');
 const methodOverride = require('method-override');
+const ejsMate = require('ejs-mate');
+const hotelRoutes = require('./routes/hotelRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+const userRoutes = require('./routes/userRoutes');
+const session = require('express-session');
+const flash = require('connect-flash');
+const passport = require('passport');
+const localStrategy = require('passport-local');
+const User = require('./models/user');
+
+const sessionConfig = {
+    secret: 'thisshouldbeabettersecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+}
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use(session(sessionConfig));
+app.use(flash());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+app.use((req, res, next) => {
+    res.locals.activeUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
+app.use('/hotels', hotelRoutes);
+app.use('/hotels/:id/reviews', reviewRoutes);
+app.use('/', userRoutes);
+app.engine('ejs', ejsMate);
+
 
 mongoose.connect('mongodb://localhost:27017/StayDB', {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
 });
 
 const db = mongoose.connection;
@@ -25,67 +68,11 @@ app.listen(1812, () => {
     console.log('Listening on port 1812!');
 })
 
-function Location(body) {
-    body.location = `${body.city}, ${body.state}`;
-    const { city, state, ...newObj } = body;
-    return newObj;
-}
-
-app.get('/hotels', async(req, res) => {
-    const hotels = await Hotel.find({});
-    res.render('home', { hotels });
+app.all('*', (req, res, next) => {
+    next(new appError("Page not found!", 404));
 })
 
-app.get('/hotels/new', (req, res) => {
-    res.render('new');
-})
-
-app.get('/hotels/:id', async(req, res) => {
-    const { id } = req.params;
-    const foundHotel = await Hotel.findById(id);
-    res.render('show', { foundHotel });
-})
-
-app.get('/hotels/:id/edit', async(req, res) => {
-    const { id } = req.params;
-    const foundHotel = await Hotel.findById(id);
-    const location = foundHotel.location;
-    let city = '',
-        state = '',
-        c = '';
-    for (let i = 0; i < location.length; i++) {
-        if (location[i] == ',') {
-            for (i = i + 2; i < location.length; i++) {
-                c = location[i];
-                state += c;
-            }
-            break;
-        }
-        c = location[i];
-        city += c;
-    }
-    foundHotel.city = city;
-    foundHotel.state = state;
-    res.render('edit', { foundHotel });
-})
-
-app.post('/hotels', async(req, res) => {
-    const newObj = Location(req.body);
-    // ['city', 'state'].forEach(e => delete req.body[e]);
-    const newHotel = new Hotel(newObj);
-    await newHotel.save();
-    res.redirect(`/hotels/${newHotel._id}`);
-})
-
-app.patch('/hotels/:id', async(req, res) => {
-    const newObj = Location(req.body);
-    const { id } = req.params;
-    await Hotel.findByIdAndUpdate(id, newObj, { runValidators: true });
-    res.redirect(`/hotels/${id}`);
-})
-
-app.delete('/hotels/:id', async(req, res) => {
-    const { id } = req.params;
-    await Hotel.findByIdAndDelete(id);
-    res.redirect('/hotels');
+app.use((err, req, res, next) => {
+    const { status = 500, message = "Something went wrong!!" } = err;
+    res.status(status).render('error', { err });
 })
