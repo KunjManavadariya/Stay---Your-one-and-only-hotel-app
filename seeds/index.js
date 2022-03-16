@@ -18,7 +18,7 @@ const names = array => array[Math.floor(Math.random() * array.length)];
 
 const seedDB = async() => {
     await Hotel.deleteMany({});
-    for (i = 0; i < 50; i++) {
+    for (i = 0; i < 300; i++) {
         const Random = Math.floor(Math.random() * 400);
         const hotel = new Hotel({
             name: `${names(description)} ${names(places)}`,
@@ -26,6 +26,10 @@ const seedDB = async() => {
             price: `${Math.floor(Math.random()*2000)}`,
             description: 'lorem ipsum sdasdcsjske isiduvhhsdi usd ohisduvsdi sdivhsiduvh sdvuhsdsdvs igrthigusyyiw fiwheifuwyq wfhyhw iuewhfiwu hweufew',
             author: '6220f174420d2a2629b6220d',
+            geometry: {
+                type: "Point",
+                coordinates: [city[Random].lng, city[Random].lat]
+            },
             images: [{
                 url: 'https://res.cloudinary.com/kpmcloud/image/upload/v1646775559/STAY/khg82n262jtsxgezuq0j.jpg',
                 filename: 'STAY/khg82n262jtsxgezuq0j'

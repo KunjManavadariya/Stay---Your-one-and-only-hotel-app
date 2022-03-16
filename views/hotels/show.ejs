@@ -58,6 +58,7 @@
         </div>
 
         <div class="col-6">
+            <div id='map'></div>
             <% if(activeUser){%>
                 <h2>Leave a review</h2>
                 <form action="/hotels/<%=foundHotel._id%>/reviews" method="post" class="mb-3 needs-validation" novalidate>
@@ -107,3 +108,9 @@
                         <%}%>
         </div>
     </div>
+
+    <script>
+        const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+        const hotel = <%- JSON.stringify(foundHotel) %>;
+    </script>
+    <script src="/scripts/showPageMap.js"></script>

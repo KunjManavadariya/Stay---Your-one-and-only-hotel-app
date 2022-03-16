@@ -1,4 +1,8 @@
 const Hotel = require('../models/hotel');
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
+const { cloudinary } = require("../cloudinary");
 
 function Location(body) {
     body.location = `${body.city}, ${body.state}`;
@@ -30,7 +34,7 @@ module.exports.showHotel = async(req, res) => {
     res.render('hotels/show', { foundHotel });
 }
 
-module.exports.renderEditForm = async(req, res) => {
+module.exports.renderUpdateForm = async(req, res) => {
     const { id } = req.params;
     const foundHotel = await Hotel.findById(id);
     if (!foundHotel) {
@@ -63,20 +67,33 @@ module.exports.renderEditForm = async(req, res) => {
 
 module.exports.createHotel = async(req, res) => {
     const newObj = Location(req.body);
-    // ['city', 'state'].forEach(e => delete req.body[e]);
+    const geoData = await geocoder.forwardGeocode({
+            query: newObj.location,
+            limit: 1
+        }).send()
+        // ['city', 'state'].forEach(e => delete req.body[e]);
     const newHotel = new Hotel(newObj);
+    newHotel.geometry = geoData.body.features[0].geometry;
     newHotel.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     newHotel.author = req.user._id;
     await newHotel.save();
-    console.log(newHotel);
     req.flash('success', 'Successfully added a Hotel!');
     res.redirect(`/hotels/${newHotel._id}`);
 }
 
-module.exports.editHotel = async(req, res, next) => {
+module.exports.updateHotel = async(req, res, next) => {
     const newObj = Location(req.body);
     const { id } = req.params;
-    await Hotel.findByIdAndUpdate(id, newObj, { runValidators: true });
+    const updatedHotel = await Hotel.findByIdAndUpdate(id, newObj, { runValidators: true });
+    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    updatedHotel.images.push(...imgs);
+    await updatedHotel.save();
+    if (req.body.deleteImages) {
+        for (let filename of req.body.deleteImages) {
+            await cloudinary.uploader.destroy(filename);
+        }
+        await updatedHotel.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+    }
     req.flash('success', 'Successfully updated Hotel!');
     res.redirect(`/hotels/${id}`);
 }

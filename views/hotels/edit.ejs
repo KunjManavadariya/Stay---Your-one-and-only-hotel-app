@@ -2,8 +2,8 @@
 
     <div class="row">
         <h1 class="text-center">Edit a hotel</h1>
-        <div class="col-6 offset-3">
-            <form action="/hotels/<%=foundHotel._id%>?_method=PATCH" method="POST" class="needs-validation" novalidate>
+        <div class="col-md-6 offset-md-3">
+            <form action="/hotels/<%=foundHotel._id%>?_method=PATCH" method="POST" class="needs-validation" novalidate enctype="multipart/form-data">
                 <div class="mb-3">
                     <label class="form-label" for="name">Name: </label>
                     <input class="form-control" type="text" id="name" name="name" value="<%=foundHotel.name%>" required>
@@ -41,6 +41,19 @@
                     <div class="invalid-feedback">
                         Please provide a valid state.
                     </div>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload Images: </label>
+                    <input class="form-control" type="file" id="image" name="image" multiple>
+                </div>
+                <div class="mb-3">
+                    <%foundHotel.images.forEach((img, i) => {%>
+                        <img src="<%=img.thumbnail%>" class="img-thumbnail">
+                        <div class="form-check-inline">
+                            <input type="checkbox" id="image-<%=i%>" name="deleteImages[]" value="<%=img.filename%>">
+                        </div>
+                        <label for="image-<%=i%>">Delete image</label>
+                        <%})%>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-info">Save Changes</button>

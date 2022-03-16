@@ -15,10 +15,10 @@ router.get('/new', isLoggedIn, hotels.renderNewForm)
 
 router.route('/:id')
     .get(catchAsync(hotels.showHotel))
-    .patch(isLoggedIn, isAuthor, validateHotel, catchAsync(hotels.editHotel))
+    .patch(isLoggedIn, isAuthor, upload.array('image'), validateHotel, catchAsync(hotels.updateHotel))
     .delete(isLoggedIn, isAuthor, catchAsync(hotels.deleteHotel))
 
-router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(hotels.renderEditForm))
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(hotels.renderUpdateForm))
 
 
 
