@@ -88,8 +88,9 @@ app.get('/', (req, res) => {
     res.render('home');
 })
 
-app.listen(1812, () => {
-    console.log('Listening on port 1812!');
+const port = process.env.PORT || 1812;
+app.listen(port, () => {
+    console.log(`Listening on port ${port}!`);
 })
 
 app.all('*', (req, res, next) => {
