@@ -1,0 +1,65 @@
+<%layout('layouts/boilerplate.ejs')%>
+
+    <div class="row">
+        <h1 class="text-center">Edit a hotel</h1>
+        <div class="col-md-6 offset-md-3">
+            <form action="/hotels/<%=foundHotel._id%>?_method=PATCH" method="POST" class="needs-validation" novalidate enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label" for="name">Name: </label>
+                    <input class="form-control" type="text" id="name" name="name" value="<%=foundHotel.name%>" required>
+                    <div class="invalid-feedback">
+                        Please provide a valid name.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="price">Price: </label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="price">Rs.</span>
+                        <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price" aria-describedby="price" name="price" value="<%=foundHotel.price%>" required>
+                        <div class="invalid-feedback">
+                            Price should not be empty.
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="description">Description</label>
+                    <textarea class="form-control" type="text" id="description" name="description" required><%= foundHotel.description%></textarea>
+                    <div class="invalid-feedback">
+                        Please provide a description.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="city">City: </label>
+                    <input class="form-control" type="text" id="city" name="city" value="<%=foundHotel.city%>" required>
+                    <div class="invalid-feedback">
+                        Please provide a valid city.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="state">State: </label>
+                    <input class="form-control" type="text" id="state" name="state" value="<%=foundHotel.state%>" required>
+                    <div class="invalid-feedback">
+                        Please provide a valid state.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload Images: </label>
+                    <input class="form-control" type="file" id="image" name="image" multiple>
+                </div>
+                <div class="mb-3">
+                    <%foundHotel.images.forEach((img, i) => {%>
+                        <img src="<%=img.thumbnail%>" class="img-thumbnail">
+                        <div class="form-check-inline">
+                            <input type="checkbox" id="image-<%=i%>" name="deleteImages[]" value="<%=img.filename%>">
+                        </div>
+                        <label for="image-<%=i%>">Delete image</label>
+                        <%})%>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-info">Save Changes</button>
+                </div>
+            </form>
+            <a href="/hotels">Back To All Hotels</a>
+
+        </div>
+    </div>
