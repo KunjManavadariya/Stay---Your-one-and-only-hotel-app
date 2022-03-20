@@ -1,7 +1,7 @@
 # Stay---Your-one-and-only-hotel-app
 # Introduction
 
-This <a href="https://stay--hotel.herokuapp.com/">website</a> is an authenticated hotel add-view-review  web app where users can add, view or post a review on some hotels and can view reviews posted by other users. It is designed to provide users the complete information to where and how the hotels and provides the authenticity to add or review one/many of them.
+This <a href="https://stay--hotel.herokuapp.com/">website</a> is an authenticated hotel add-view-review  web app where users can add, view or post a review on some hotels and can view reviews posted by other users. It is designed to provide users the complete information to where and how the hotels are and provides the authenticity to add or review one/many of them.
 It is originally designed by <a href="https://www.linkedin.com/in/kunjmanavadariya/">Kunj Manavadariya</a>.
 
 # Features of the website
