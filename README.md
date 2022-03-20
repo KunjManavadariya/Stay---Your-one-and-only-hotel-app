@@ -83,7 +83,7 @@ The content map of the website is as follows:
 </ol>
 
 
-# Credits:
+# Credits
 
 Colt Steele's <a href="https://www.udemy.com/course/the-web-developer-bootcamp/">The Web Developer Bootcamp 2021</a>
 
