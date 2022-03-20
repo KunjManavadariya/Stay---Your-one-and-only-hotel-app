@@ -45,7 +45,7 @@ The content map of the website is as follows:
 # How can you contribute to the website
 <ol>
 <li> Go to link - https://github.com/KunjManavadariya/Stay---Your-one-and-only-hotel-app</li>
-<li> Click on the green drop down button named 'Code'</li>
+<li> Click on the green drop down button named 'Code'.</li>
 <li> Now click on the 'Download ZIP' to download the zip file of the full code on your machine.</li>
 <li> Extract the downloaded file on your desired location.</li>
 <li> Edit the code and add anything that you think would make the website more valuable.</li>
