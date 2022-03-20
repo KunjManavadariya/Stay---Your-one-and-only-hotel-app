@@ -42,7 +42,7 @@ The content map of the website is as follows:
 
 
 
-# How can you contribute to the website:
+# How can you contribute to the website
 <ol>
 <li> Go to link - https://github.com/KunjManavadariya/Stay---Your-one-and-only-hotel-app</li>
 <li> Click on the green drop down button named 'Code'</li>
@@ -54,7 +54,7 @@ The content map of the website is as follows:
 
 
 
-# Technologies used for building this website:
+# Technologies used for building this website
 <ol>
 	<li>Hosting platform</li>
 	<ul>
