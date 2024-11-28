@@ -72,6 +72,8 @@ const sessionConfig = {
 if (isProduction) {
   app.set("trust proxy", 1);
   app.use((req, res, next) => {
+    console.log("req.secure", req.secure);
+
     if (!req.secure) {
       return res.redirect(`https://${req.headers.host}${req.url}`);
     }
