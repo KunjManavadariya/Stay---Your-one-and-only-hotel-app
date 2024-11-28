@@ -1,11 +1,14 @@
 # Stay---Your-one-and-only-hotel-app
+
 # Introduction
 
-This <a href="https://stay--hotel.herokuapp.com/">website</a> is an authenticated hotel add-view-review  web app where users can add, view or post a review on some hotels and can view reviews posted by other users. It is designed to provide users the complete information to where and how the hotels are and the authenticity to add or review one/many of them.
+This <a href="https://stay-your-one-and-only-hotel-app.onrender.com/">website</a> is an authenticated hotel add-view-review web app where users can add, view or post a review on some hotels and can view reviews posted by other users. It is designed to provide users the complete information to where and how the hotels are and the authenticity to add or review one/many of them.
 It is originally designed by <a href="https://www.linkedin.com/in/kunjmanavadariya/">Kunj Manavadariya</a>.
 
 # Features of the website
+
 The content map of the website is as follows:
+
 <ol><li>User Sign up</li>
 	<ul>
 	<li>User can register himself/herself in the stay app and then can access enlarged number of available features.</li>
@@ -40,9 +43,8 @@ The content map of the website is as follows:
 	</ul>
 </ol>
 
-
-
 # How can you contribute to the website
+
 <ol>
 <li> Go to link - https://github.com/KunjManavadariya/Stay---Your-one-and-only-hotel-app</li>
 <li> Click on the green drop down button named 'Code'.</li>
@@ -52,9 +54,8 @@ The content map of the website is as follows:
 <li> After adding your custom features, you can create a "pull request" to the link (in the first step) with proper documentation.</li>
 </ol>
 
-
-
 # Technologies used for building this website
+
 <ol>
 	<li>Hosting platform</li>
 	<ul>
@@ -82,9 +83,6 @@ The content map of the website is as follows:
 	</ul>
 </ol>
 
-
 # Credits
 
 Colt Steele's <a href="https://www.udemy.com/course/the-web-developer-bootcamp/">The Web Developer Bootcamp 2021</a>
-
-
