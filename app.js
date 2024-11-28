@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== "production") {
 const express = require("express");
 const app = express();
 const path = require("path");
+const helmet = require("helmet");
 const mongoose = require("mongoose");
 const appError = require("./utils/errorClass");
 const methodOverride = require("method-override");
@@ -16,6 +17,7 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
 const localStrategy = require("passport-local");
+const winston = require("winston");
 const User = require("./models/user");
 const mongoSanitize = require("express-mongo-sanitize");
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/StayDB";
@@ -32,6 +34,13 @@ db.once("open", () => {
   console.log("Database Connected!");
 });
 
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+    contentSecurityPolicy: false,
+  })
+);
+
 const MongoStore = require("connect-mongo");
 
 const store = MongoStore.create({
@@ -43,19 +52,32 @@ store.on("error", (e) => {
   console.log("Session store error", e);
 });
 
+const isProduction = process.env.NODE_ENV === "production";
+
 const sessionConfig = {
   store,
   name: "Session",
   secret,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: true,
+    secure: isProduction,
+    sameSite: "lax",
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
 };
+
+if (isProduction) {
+  app.set("trust proxy", 1);
+  app.use((req, res, next) => {
+    if (!req.secure) {
+      return res.redirect(`https://${req.headers.host}${req.url}`);
+    }
+    next();
+  });
+}
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -88,7 +110,7 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
-const port = process.env.PORT || 1812;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Listening on port ${port}!`);
 });
@@ -97,7 +119,16 @@ app.all("*", (req, res, next) => {
   next(new appError("Page not found!", 404));
 });
 
+const logger = winston.createLogger({
+  level: "error",
+  transports: [
+    new winston.transports.File({ filename: "error.log" }),
+    new winston.transports.Console(),
+  ],
+});
+
 app.use((err, req, res, next) => {
   const { status = 500, message = "Something went wrong!!" } = err;
+  logger.error(err.stack);
   res.status(status).render("error", { err });
 });
